@@ -1,10 +1,14 @@
 //CONFIGURATION
 const express = require("express");
 const treatments = express.Router();
-const { getAllTreatments, getTreatment, createTreatment, deleteTreatment, putTreatment } = require("../queries/treatments");
+const {
+  getAllTreatments,
+  getTreatment,
+  createTreatment,
+  deleteTreatment,
+  putTreatment,
+} = require("../queries/treatments");
 const { validate } = require("../validation/checkTreatments.js");
-
-
 
 //INDEX ROUTE
 treatments.get("/", async (req, res) => {
@@ -29,11 +33,8 @@ treatments.get("/:id", async (req, res) => {
 });
 
 //CREATE ROUTE
-treatments.post("/", async (req, res) => {
+treatments.post("/", validate, async (req, res) => {
   try {
-    if (!validate(req.body)) {
-      return res.status(400).json({ error: "invalid Input Please Try Again." });
-    }
     const treatment = await createTreatment(req.body);
     return res.json(treatment);
   } catch (error) {
@@ -54,11 +55,8 @@ treatments.delete("/:id", async (req, res) => {
 });
 
 //UPDATE ROUTE
-treatments.put("/:id", async (req, res) => {
+treatments.put("/:id", validate, async (req, res) => {
   try {
-    if (!validate(req.body)) {
-      return res.status(400).json({ error: "Invalid Input Please Try Again." });
-    }
     const treatment = await putTreatment(req.body, req.params.id);
     return res.json(treatment);
   } catch (error) {
