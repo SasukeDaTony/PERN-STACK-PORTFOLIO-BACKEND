@@ -1,4 +1,5 @@
 //CONFIGURATION
+const treatment = require("./models/treatmentModel.js");
 const express = require("express");
 const treatments = express.Router();
 const {
@@ -12,6 +13,13 @@ const { validate } = require("../validation/checkTreatments.js");
 
 //INDEX ROUTE
 treatments.get("/", async (req, res) => {
+  const { category } = req.query;
+  let filteredTreatments = treatment;
+  if (category) {
+    filteredTreatments = filteredTreatments.filter((treatment) => {
+      treatment.category.toString() === category;
+    });
+  }
   const allTreatments = await getAllTreatments();
   if (allTreatments[0]) {
     res.status(200).json(allTreatments);

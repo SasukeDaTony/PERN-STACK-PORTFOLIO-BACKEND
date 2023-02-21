@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const allTreatments = require("./controllers/treatmentsController");
 
+
 //CONFIGURATION
 const app = express();
 
